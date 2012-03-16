@@ -13,6 +13,7 @@
             SmallFireball Snowball Snowman Spider Squid StorageMinecart
             ThrownPotion TNTPrimed Vehicle Villager WaterMob Weather Wolf
             Zombie])
+  (:import [org.bukkit.inventory ItemStack])
   (:import [org.bukkit.event.entity EntityDamageByEntityEvent
             EntityDamageEvent$DamageCause]))
 
@@ -40,7 +41,7 @@
     (let [block (.getBlock (.add (.getLocation (.getPlayer evt)) 0 2 0))
           helmet (.getHelmet (.getInventory (.getPlayer evt)))]
       (letfn [(go []
-                (.breakNaturally block)
+                (.breakNaturally block (ItemStack. Material/DIAMOND_PICKAXE))
                 (c/add-velocity (.getPlayer evt) 0 0.5 0))]
         (cond
           (nil? helmet)
