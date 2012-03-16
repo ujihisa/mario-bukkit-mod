@@ -18,10 +18,10 @@
 
 (defn player-move-event [evt]
   (when (c/jumping? evt)
-    (let [block (.getBlock (.getTo evt))]
-      (when (= (.getType block) Material/LEAVES)
-        (prn 'ok)
-        (.setType block Material/AIR)))))
+    (let [block (.getBlock (.add (.getLocation (.getPlayer evt)) 0 2 0))]
+      (when (#{Material/LEAVES Material/DIRT} (.getType block))
+        (.setType block Material/AIR)
+        (c/add-velocity (.getPlayer evt) 0 0.5 0)))))
 
 (defonce swank* nil)
 (defn on-enable [plugin]
