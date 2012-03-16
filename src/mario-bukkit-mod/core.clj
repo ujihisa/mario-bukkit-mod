@@ -24,7 +24,7 @@
     Material/WOOD Material/WOOL Material/WORKBENCH})
 
 (def normal-materials
-  #{Material/COAL Material/COBBLESTONE Material/COBBLESTONE_STAIRS
+  #{Material/COAL_ORE Material/COBBLESTONE Material/COBBLESTONE_STAIRS
     Material/DIAMOND_BLOCK Material/DIAMOND_ORE Material/DOUBLE_STEP
     Material/FENCE Material/FENCE_GATE Material/GOLD_BLOCK Material/GOLD_ORE
     Material/IRON_BLOCK Material/IRON_ORE Material/LAPIS_ORE
