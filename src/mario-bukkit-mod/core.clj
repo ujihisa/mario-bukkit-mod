@@ -36,6 +36,18 @@
   #{Material/BRICK Material/BRICK_STAIRS Material/MOB_SPAWNER
     Material/OBSIDIAN})
 
+(defn player-interact-entity-event [evt]
+  (let [item (.getItemInHand (.getPlayer evt))
+        target (.getRightClicked evt)]
+    (when (and
+            item
+            (= (.getType item) Material/PUMPKIN)
+            target
+            (instance? Player target)
+            (nil? (.getHelmet (.getInventory target))))
+      (.setHelmet (.getInventory target) (ItemStack. Material/PUMPKIN))
+      (c/consume-item (.getPlayer evt)))))
+
 (defn player-move-event [evt]
   (let [helmet (.getHelmet (.getInventory (.getPlayer evt)))]
     (when (and helmet (= (.getType helmet) Material/PUMPKIN) (c/jumping? evt))
