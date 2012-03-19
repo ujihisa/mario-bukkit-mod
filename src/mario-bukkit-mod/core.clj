@@ -55,7 +55,9 @@
         (letfn [(go []
                   (.breakNaturally block (ItemStack. Material/DIAMOND_PICKAXE))
                   (c/add-velocity (.getPlayer evt) 0 0.5 0))]
-          (go)
+          (when
+            ((s/union soft-materials normal-materials hard-materials) (.getType block))
+            (go))
           (comment (cond
                      (nil? helmet)
                      (when (soft-materials (.getType block))
