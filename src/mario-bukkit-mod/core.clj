@@ -37,29 +37,30 @@
     Material/OBSIDIAN})
 
 (defn player-move-event [evt]
-  (when (c/jumping? evt)
-    (let [block (.getBlock (.add (.getLocation (.getPlayer evt)) 0 2 0))
-          helmet (.getHelmet (.getInventory (.getPlayer evt)))]
-      (letfn [(go []
-                (.breakNaturally block (ItemStack. Material/DIAMOND_PICKAXE))
-                (c/add-velocity (.getPlayer evt) 0 0.5 0))]
-        (cond
-          (nil? helmet)
-          (when (soft-materials (.getType block))
-            (go))
-
-          (and
-            (#{Material/LEATHER_HELMET Material/GOLD_HELMET Material/IRON_HELMET Material/CHAINMAIL_HELMET} (.getType helmet))
-            ((s/union soft-materials normal-materials) (.getType block)))
+  (let [helmet (.getHelmet (.getInventory (.getPlayer evt)))]
+    (when (and helmet (= (.getType helmet) Material/PUMPKIN) (c/jumping? evt))
+      (let [block (.getBlock (.add (.getLocation (.getPlayer evt)) 0 2 0))]
+        (letfn [(go []
+                  (.breakNaturally block (ItemStack. Material/DIAMOND_PICKAXE))
+                  (c/add-velocity (.getPlayer evt) 0 0.5 0))]
           (go)
+          (comment (cond
+                     (nil? helmet)
+                     (when (soft-materials (.getType block))
+                       (go))
 
-          (and
-            (#{Material/DIAMOND_HELMET} (.getType helmet))
-            ((s/union soft-materials normal-materials hard-materials) (.getType block)))
-          (go)
+                     (and
+                       (#{Material/LEATHER_HELMET Material/GOLD_HELMET Material/IRON_HELMET Material/CHAINMAIL_HELMET} (.getType helmet))
+                       ((s/union soft-materials normal-materials) (.getType block)))
+                     (go)
 
-          :else
-          nil)))))
+                     (and
+                       (#{Material/DIAMOND_HELMET} (.getType helmet))
+                       ((s/union soft-materials normal-materials hard-materials) (.getType block)))
+                     (go)
+
+                     :else
+                     nil)))))))
 
 (defonce swank* nil)
 (defn on-enable [plugin]
